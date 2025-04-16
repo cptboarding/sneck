@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 """Exemple d'utilisation de curses.
-jeu snake 
+ menu du jeu sneck  qui permet d'afficher les differentes options play ,quitter et options. 
 """
 """ Installation :
 pip install windows-curses 
 pip install curses-menu
-lancer prog : python J:\Documents\infoOC\snake.py """
+lancer prog : python J:\Documents\infoOC\menu.py """
 
-
+import cursesmenu
 from cursesmenu import CursesMenu
 from cursesmenu.items import FunctionItem
 
 def play_game():
     print("Le jeu commence...")
-    input("Appuyez sur Entrée pour continuer...")  # Pour éviter la fermeture immédiate
+    input("Appuyez sur Entrée pour continuer...") 
 
 def show_options():
     print("Options du jeu :")
@@ -27,7 +27,7 @@ def quit_game():
     exit()
 
 def main():
-    menu = CursesMenu("Snake Game", "Utilisez les flèches pour naviguer")
+    menu = CursesMenu("Sneck Game", "Utilisez les flèches pour naviguer")
     
     # Création des items avec la méthode correcte
     play_item = FunctionItem("Jouer", play_game, menu)
@@ -43,10 +43,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
 
 
 
