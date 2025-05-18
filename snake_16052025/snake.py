@@ -13,6 +13,7 @@ RIEN = " "
 PERSONNAGE = "@"
 CLONE = "#"
 BORDER = "-"
+point= "."
 
 
 def debut(console):
@@ -114,13 +115,12 @@ def afficher_score(console, score, x_score=105, y_score=2):
     console.addstr(y_score, x_score, f"| Score : {score:<5} |")
     console.addstr(y_score + 1, x_score, "+" + "-" * (largeur - 2) + "+")
 
-def jeu(console):
+def jeu(console,pommes):
     """Affiche le personnage"""
     x_min, y_min, x_max, y_max = 0, 0, 100, 20
     x, y = 10, 10
     clones = []
-    pommes = []
-    score = 0
+    score= 0
     key = "d"
     
     border(console, BORDER, x_min, y_min, x_max, y_max)
@@ -131,6 +131,9 @@ def jeu(console):
         afficher_score(console, score)
         time.sleep(0.1)
         f = frame(console, snake, x_min, y_min, x_max, y_max, key)
+        if (y, x) in pommes:
+            pommes.remove((y, x))      # On enlève la pomme mangée
+            score += 1                 # On augmente le score 
         if f == 'c est nul':
             break
         else:
@@ -142,8 +145,8 @@ def jeu(console):
         
 def programme(console):
     debut(console)
-    jeu(console)
-
+    pommes = pommegenerateur(console, point)
+    jeu(console,pommes)
 
 if __name__ == "__main__":
     curses.wrapper(programme)
