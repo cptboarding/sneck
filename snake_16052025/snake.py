@@ -93,6 +93,26 @@ def frame(console, snake, x_min, y_min, x_max, y_max, key):
         y, x = snake.nouvelles_coordonnees(key, clones,  x_min, y_min, x_max, y_max)
         return y, x, clones, key
 
+def randompointposition() -> tuple:
+    y = random.randint(1, 19)  # éviter les bords
+    x = random.randint(1, 99)
+    return (y, x)
+
+
+def pommegenerateur(console, point):
+    pommes = []
+    for _ in range(10):
+        y, x = randompointposition()
+        pommes.append((y, x))
+        console.addstr(y, x, point)
+    return pommes
+    
+def afficher_score(console, score, x_score=105, y_score=2):
+    "affiche le score dans un encadré"
+    largeur = 15
+    console.addstr(y_score - 1, x_score, "+" + "-" * (largeur - 2) + "+")
+    console.addstr(y_score, x_score, f"| Score : {score:<5} |")
+    console.addstr(y_score + 1, x_score, "+" + "-" * (largeur - 2) + "+")
 
 def jeu(console):
     """Affiche le personnage"""
@@ -107,6 +127,8 @@ def jeu(console):
     
     while True:
         snake = personnage(y, x, PERSONNAGE, clones, CLONE)
+        #permet d'actualiser le score à chaque pomme manger 
+        afficher_score(console, score)
         time.sleep(0.1)
         f = frame(console, snake, x_min, y_min, x_max, y_max, key)
         if f == 'c est nul':
