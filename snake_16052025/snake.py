@@ -2,7 +2,6 @@
 python "J:\Documents\Informatique\3ème année\Projet 2ème semestre\snake.py"
 hauteur, longueur = console.getmaxyx()
 """
-
 import curses
 import random
 import time
@@ -94,7 +93,7 @@ def frame(console, snake, x_min, y_min, x_max, y_max, key):
         y, x = snake.nouvelles_coordonnees(key, clones,  x_min, y_min, x_max, y_max)
         return y, x, clones, key
 
-def randompointposition() -> tuple:
+def randompommeposition() -> tuple:
     y = random.randint(1, 19)  # éviter les bords
     x = random.randint(1, 99)
     return (y, x)
@@ -103,7 +102,7 @@ def randompointposition() -> tuple:
 def pommegenerateur(console, point):
     pommes = []
     for _ in range(10):
-        y, x = randompointposition()
+        y, x = randompommeposition()
         pommes.append((y, x))
         console.addstr(y, x, point)
     return pommes
@@ -133,7 +132,11 @@ def jeu(console,pommes):
         f = frame(console, snake, x_min, y_min, x_max, y_max, key)
         if (y, x) in pommes:
             pommes.remove((y, x))      # On enlève la pomme mangée
-            score += 1                 # On augmente le score 
+            score += 1 # On augmente le score
+            #créer une nouvelle pomme et l'ajoute à la liste 
+            y_n,x_n = randompommeposition()
+            pommes.append((y_n,x_n))
+            console.addstr(y_n, x_n, point)
         if f == 'c est nul':
             break
         else:
