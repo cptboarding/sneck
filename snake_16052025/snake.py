@@ -112,7 +112,7 @@ def afficher_score(console, score, x_score=105, y_score=2):
     "affiche le score dans un encadré"
     largeur = 15
     console.addstr(y_score - 1, x_score, "+" + "-" * (largeur - 2) + "+")
-    console.addstr(y_score, x_score, f"| Score : {score:<5} |")
+    console.addstr(y_score, x_score, f"|Score : {score:<5}|")
     console.addstr(y_score + 1, x_score, "+" + "-" * (largeur - 2) + "+")
 
 def jeu(console,pommes):
