@@ -12,7 +12,9 @@ RIEN = " "
 PERSONNAGE = "@"
 CLONE = "#"
 BORDER = "-"
-point= "."
+pomme = "●"
+SYMBOL_GOLDEN_POMME = "⚡"
+
 
 
 def debut(console):
@@ -99,13 +101,22 @@ def randompommeposition() -> tuple:
     return (y, x)
 
 
-def pommegenerateur(console, point):
+def pommegen(console, pomme):
     pommes = []
-    for _ in range(10):
+    for i in range(10):
         y, x = randompommeposition()
         pommes.append((y, x))
-        console.addstr(y, x, point)
+        console.addstr(y, x, pomme)
     return pommes
+
+def golden_pommegen(console, SYMBOL_GOLDEN_POMME):
+    the_golden_pomme = []
+    y_g,x_g = randompommeposition()
+    the_golden_pomme.append((y_g,x_g))
+    console.addstr(y_g, x_g,SYMBOL_GOLDEN_POMME)  # golden_pomme doit être une string ici
+    return the_golden_pomme
+
+    
     
 def afficher_score(console, score, x_score=105, y_score=2):
     "affiche le score dans un encadré"
@@ -120,6 +131,8 @@ def jeu(console,pommes):
     x, y = 10, 10
     clones = []
     score= 0
+    last_golden_score = -20
+    golden_pomme = []
     key = "d"
     
     border(console, BORDER, x_min, y_min, x_max, y_max)
@@ -136,7 +149,16 @@ def jeu(console,pommes):
             #créer une nouvelle pomme et l'ajoute à la liste 
             y_n,x_n = randompommeposition()
             pommes.append((y_n,x_n))
-            console.addstr(y_n, x_n, point)
+            console.addstr(y_n, x_n, pomme)
+        if score != 0 and score % 20 == 0 and score != last_golden_score :
+            #affiche et génère la golden_pomme
+            golden_pomme = golden_pommegen(console,SYMBOL_GOLDEN_POMME)
+            last_golden_score = score
+        if (y,x) in golden_pomme:
+            golden_pomme.remove((y,x))
+            score += 5
+
+
         if f == 'c est nul':
             break
         else:
@@ -148,7 +170,7 @@ def jeu(console,pommes):
         
 def programme(console):
     debut(console)
-    pommes = pommegenerateur(console, point)
+    pommes = pommegen(console, pomme)
     jeu(console,pommes)
 
 if __name__ == "__main__":
