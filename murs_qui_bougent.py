@@ -50,11 +50,11 @@ class moving_wall(NamedTuple):
 
 
 
-
-w = moving_wall((2, 1), 1, 1, (1, 0), 5)
-for i in range(15):
-    print(w.return_coordinates())
-    w = w.frame()
+if __name__ == "__main__":
+    w = moving_wall((2, 1), 1, 1, (1, 0), 5)
+    for i in range(15):
+        print(w.return_coordinates())
+        w = w.frame()
 
 
 
