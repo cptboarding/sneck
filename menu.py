@@ -5,41 +5,47 @@
 """ Installation :
 pip install windows-curses 
 pip install curses-menu
-lancer prog : python J:\Documents\infoOC\menu.py """
+lancer prog : python J:\Informatique\infoOC\sneck\menu.py """
 
-import cursesmenu
-from cursesmenu import CursesMenu
-from cursesmenu.items import FunctionItem
+from jeu_snake import programme 
+import subprocess
+import sys
+import curses
 
 def play_game():
-    print("Le jeu commence...")
-    input("Appuyez sur Entrée pour continuer...") 
+    curses.wrapper(programme)
+    """ chemin_script = r"J:\Informatique\infoOC\sneck\jeu_snake.py"
+    print(">>> Lancement du jeu en externe...")
+    result = subprocess.run([sys.executable, chemin_script])
+    print(">>> Jeu terminé avec code retour:", result.returncode)
+    input("Appuyez sur Entrée pour revenir au menu...")"""
 
 def show_options():
     print("Options du jeu :")
-    print("1. Mode de jeu")
-    print("2. Commandes")
-    print("3. Retour au menu principal")
+    print("1. Mode de base jeu sneck classique avec pomme")
+    print("2. Mode medium (mur en mouvement)")
+    print("3. Mode hardcore (mur en mouvement et pomme qui se tp en touchant le mur)")
     input("Appuyez sur Entrée pour continuer...")
 
 def quit_game():
     print("Quitter le jeu...")
-    exit()
+    sys.exit()
 
 def main():
-    menu = CursesMenu("Sneck Game", "Utilisez les flèches pour naviguer")
-    
-    # Création des items avec la méthode correcte
-    play_item = FunctionItem("Jouer", play_game, menu)
-    options_item = FunctionItem("Options", show_options, menu)
-    quit_item = FunctionItem("Quitter", quit_game, menu)
-    
-    # Ajout des items au menu
-    menu.items.append(play_item)
-    menu.items.append(options_item)
-    menu.items.append(quit_item)
-    
-    menu.show()
+    while True:
+        print("\n--- Menu Sneck Game ---")
+        print("1. Jouer")
+        print("2. Options")
+        print("3. Quitter")
+        choix = input("Votre choix : ")
+        if choix == "1":
+            play_game()
+        elif choix == "2":
+            show_options()
+        elif choix == "3":
+            quit_game()
+        else:
+            print("Choix invalide, réessayez.")
 
 if __name__ == "__main__":
     main()
