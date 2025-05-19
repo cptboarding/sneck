@@ -10,6 +10,8 @@ class moving_wall(NamedTuple):
     vel: tuple
     move_range: int
     progress: int = 0
+    x_max: int = 100     
+    y_max: int = 20
 
     @classmethod
     def new(cls, d, x, y, v, mr, p):
