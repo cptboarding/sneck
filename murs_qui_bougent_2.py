@@ -1,7 +1,10 @@
-
+'''
+docstring principale histoire de respecter les conventions de mr Kessler
+'''
 
 from typing import NamedTuple
 
+#la classe qui fait des murs mobiles
 class moving_wall(NamedTuple):
     dimentions: tuple      
     x_start: int
@@ -12,10 +15,12 @@ class moving_wall(NamedTuple):
     x_max: int = 100        
     y_max: int = 20        
 
+    #retourne un nouveau self
     @classmethod
     def new(cls, d, x, y, v, mr, p, x_max=100, y_max=20):
         return cls(d, x, y, v, mr, p, x_max, y_max)
 
+    #les 2 trucs ci dessous sont pour processer le frame du mur
     def frame_x(self):
         # Calcul de la limite max pour que le mur ne dépasse pas
         max_progress = self.move_range - self.dimentions[0]
@@ -34,14 +39,15 @@ class moving_wall(NamedTuple):
             return self.progress + 1, (0, 1)
         else:
             return self.progress + self.vel[1], self.vel
-
+    #regroupe les deux trucs ci dessus
     def frame(self):
         if abs(self.vel[0]) == 1:
             p, v = self.frame_x()
         else:
             p, v = self.frame_y()
         return self.new(self.dimentions, self.x_start, self.y_start, v, self.move_range, p, self.x_max, self.y_max)
-
+    
+    # retourne les coordonnees
     def return_coordinates(self):
         r = []
         for y in range(self.dimentions[1]):
