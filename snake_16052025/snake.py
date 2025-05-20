@@ -150,6 +150,8 @@ def jeu(console, pommes: list, murs: list = None, x_min: int, y_min: int, x_max:
         f = frame(console, snake, longueur_max, x_min, y_min, x_max, y_max, key)
         if f == 'c est nul':
             break
+        else:
+            y, x, clones, key = f
         
         if murs:
             for mur in murs:
@@ -185,8 +187,6 @@ def jeu(console, pommes: list, murs: list = None, x_min: int, y_min: int, x_max:
         if (y, x) in golden_pomme:
             golden_pomme.remove((y, x))
             score += 5
-        else:
-            y, x, clones, key = f
 
     console.nodelay(False)
     game_over(console, snake, x_min, y_min, x_max, y_max)
