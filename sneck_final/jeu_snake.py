@@ -23,7 +23,7 @@ def debut(console):
 	console.refresh()
 
 
-def afficher(console, texte, temps):
+def afficher(console, texte):
 	"""Affiche du texte"""
 	y_texte, x_texte = 0, 0
 	for lettre in texte:
@@ -51,7 +51,7 @@ def game_over(console, y, x, clones, x_min, y_min, x_max, y_max):
 	for x in range(x_min, x_max+1):
     		console.addstr(y_max, x, RIEN)
     		console.addstr(y_min, x, RIEN)
-	afficher(console, "Tu es nul!!!!!!!!!!!!!!!!!!!!!!!!!!!", 5)
+	afficher(console, "Game over")
 	
 
             
