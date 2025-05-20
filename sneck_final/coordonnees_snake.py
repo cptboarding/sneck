@@ -15,7 +15,7 @@ class personnage(NamedTuple):
     
     
     @staticmethod
-    def verifier(y, x, clones,  x_min, y_min, x_max, y_max):
+    def verifier(y: int, x: int, clones: list,  x_min: int, y_min: int, x_max: int, y_max: int) -> str:
         """Vérifie si les coordonnées y et x sont possibles"""
         if (y, x) in clones:
             return "nul"
@@ -23,7 +23,7 @@ class personnage(NamedTuple):
             return "nul"
 
     
-    def nouvelles_coordonnees(self, key, x_min, y_min, x_max, y_max):
+    def nouvelles_coordonnees(self, key: str, x_min: int, y_min: int, x_max: int, y_max: int) -> tuple(int, int):
         """Retourne les nouvelles coordonnées en fonction du key"""
         if key == "a":
             if personnage.verifier(self.y, self.x-1, self.clones, x_min, y_min, x_max, y_max) == "nul":
@@ -52,7 +52,7 @@ class personnage(NamedTuple):
         return y, x
      
     @staticmethod
-    def supprimer_premier_element(collection):
+    def supprimer_premier_element(collection: list) -> list:
         """Supprime le premier élément d'une collection"""
         nouvelle_collection = []
         for i in range(len(collection)):
@@ -61,7 +61,7 @@ class personnage(NamedTuple):
         return nouvelle_collection
 
 
-    def update_clones(self, longueur_max):
+    def update_clones(self, longueur_max: int) -> list:
         """Supprimme le dernier clone si la longueur_max est atteinte, et ajoute un nouveau clone"""
         clones = self.clones
         if len(clones) == longueur_max:
@@ -71,7 +71,7 @@ class personnage(NamedTuple):
         return clones
 
 
-def _tests():
+def _tests() -> None:
     snake_exemple = personnage(10, 10, "@", [(10, 7), (10, 8), (10, 9)], "#")
     assert snake_exemple.nouvelles_coordonnees("d", 0, 0, 20, 20) == (10, 11)
 
@@ -86,4 +86,3 @@ def _tests():
 
 if __name__ == "__main__":
     _tests()
-
