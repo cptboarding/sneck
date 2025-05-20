@@ -1,7 +1,3 @@
-"""
-Programme qui lance le jeu snake en fonction des options choisies par l'utilisateur
-"""
-
 import curses
 import random
 import time
@@ -17,14 +13,15 @@ pomme = "●"
 SYMBOL_GOLDEN_POMME = "§"
 
 
-def debut(console) -> None:
+
+def debut(console):
     console.clear()
     curses.curs_set(False)
     console.refresh()
 
 
-def afficher(console, texte: str, y_texte: int, x_texte: int) -> None:
-    """Affiche du texte aux coordonnées données et attend une "key" avant de le supprimer"""
+def afficher(console, texte, y_texte, x_texte, temps=5):
+    """Affiche du texte"""
     for lettre in texte:
         console.addstr(y_texte, x_texte, lettre)
         x_texte = x_texte+1
@@ -36,8 +33,8 @@ def afficher(console, texte: str, y_texte: int, x_texte: int) -> None:
         x_texte = x_texte+1
 
 
-def border(console, caractere: str, x_min: int, y_min: int, x_max: int, y_max: int) -> None:
-    """Dessine les bords en fonction de la zone de jeu"""
+def border(console, caractere, x_min, y_min, x_max, y_max):
+    """Dessine les bords"""
     for y in range(y_min-1, y_max+2):
         console.addstr(y, x_min-1, caractere)
         console.addstr(y, x_max+1, caractere)
@@ -46,26 +43,25 @@ def border(console, caractere: str, x_min: int, y_min: int, x_max: int, y_max: i
         console.addstr(y_min-1, x, caractere)
 
 
-def game_over(console, snake: personnage, x_min: int, y_min: int, x_max: int, y_max: int) -> None:
-    """Supprime tout et affiche "Game over" """
+def game_over(console, snake, x_min, y_min, x_max, y_max):
+    """Supprime tout et affiche "tu es nul" """
     console.addstr(snake.y, snake.x, RIEN)
     for coordonnees in snake.clones:
         console.addstr(coordonnees[0], coordonnees[1], RIEN)
-    for y in range(y_min-1, y_max+2):
-        console.addstr(y, x_min-1, RIEN)
-        console.addstr(y, x_max+1, RIEN)
-    for x in range(x_min-1, x_max+2):
-        console.addstr(y_max+1, x, RIEN)
-        console.addstr(y_min-1, x, RIEN)
+    for y in range(y_min, y_max+1):
+        console.addstr(y, x_min, RIEN)
+        console.addstr(y, x_max, RIEN)
+    for x in range(x_min, x_max+1):
+        console.addstr(y_max, x, RIEN)
+        console.addstr(y_min, x, RIEN)
     afficher(console, "Game over", 10, 50)
 
 
-def frame(console, snake: personnage, longueur_max: int, x_min: int, y_min: int, x_max: int, y_max: int, key: str) -> str|tuple:
+def frame(console, snake, longueur_max, x_min, y_min, x_max, y_max, key):
     """Affiche le snake"""
     clones = snake.clones
 
     console.addstr(snake.y, snake.x, snake.caractere_snake) #affiche la tête
-    
     console.nodelay(True)
     try:
         newkey = console.getkey()
@@ -89,25 +85,18 @@ def frame(console, snake: personnage, longueur_max: int, x_min: int, y_min: int,
     else:
         y, x = snake.nouvelles_coordonnees(key,  x_min, y_min, x_max, y_max)
         return y, x, clones, key
-
-
-def afficher_score(console, score: int, x_score: int = 105, y_score: int = 2) -> None:
+def afficher_score(console, score, x_score=105, y_score=2):
     "Affiche le score dans un encadré"
     largeur = 15
     console.addstr(y_score - 1, x_score, "+" + "-" * (largeur - 2) + "+")
     console.addstr(y_score, x_score, f"|Score : {score}|")
     console.addstr(y_score + 1, x_score, "+" + "-" * (largeur - 2) + "+")
-
-
-def randompommeposition(x_min: int, y_min: int, x_max: int, y_max: int) -> tuple:
-    """Rend une position aléatoire"""
+def randompommeposition(x_min, y_min, x_max, y_max) -> tuple:
     y = random.randint(y_min,y_max )  # éviter les bords
     x = random.randint(x_min, x_max)
     return (y, x)
 
-
-def pommegen(console, pomme: str, x_min: int, y_min: int, x_max: int, y_max: int) -> list:
-    """Affiche les pommes"""
+def pommegen(console, pomme,x_min, y_min, x_max, y_max):
     pommes = []
     for _ in range(10):
         y, x = randompommeposition(x_min, y_min, x_max, y_max)
@@ -115,18 +104,18 @@ def pommegen(console, pomme: str, x_min: int, y_min: int, x_max: int, y_max: int
         console.addstr(y, x, pomme)
     return pommes
 
-
-def golden_pommegen(console, SYMBOL_GOLDEN_POMME: str, x_min: int, y_min: int, x_max: int, y_max: int) -> list:
-    """Affiche les golden pommes"""
+def golden_pommegen(console, SYMBOL_GOLDEN_POMME,x_min, y_min, x_max, y_max):
     the_golden_pomme = []
     y_g, x_g = randompommeposition(x_min, y_min, x_max, y_max)
     the_golden_pomme.append((y_g, x_g))
     console.addstr(y_g, x_g, SYMBOL_GOLDEN_POMME)
     return the_golden_pomme
+   
 
-
-def jeu(console, pommes: list, murs: list = None, x_min: int, y_min: int, x_max: int, y_max: int) -> None:
+def jeu(console,pommes,murs=None):
     """Le jeu"""
+    hauteur, longueur = console.getmaxyx()
+    x_min, y_min, x_max, y_max = 10, 5, longueur-10, hauteur-5
     x, y = 30, 15
     score = 0
     longueur_max = 2
@@ -150,10 +139,8 @@ def jeu(console, pommes: list, murs: list = None, x_min: int, y_min: int, x_max:
         f = frame(console, snake, longueur_max, x_min, y_min, x_max, y_max, key)
         if f == 'c est nul':
             break
-        else:
-            y, x, clones, key = f
-        
         if murs:
+            
             for mur in murs:
                 for (mx, my) in mur.return_coordinates():
                     if 0 <= my < height and 0 <= mx < width:
@@ -187,19 +174,18 @@ def jeu(console, pommes: list, murs: list = None, x_min: int, y_min: int, x_max:
         if (y, x) in golden_pomme:
             golden_pomme.remove((y, x))
             score += 5
+        else:
+            y, x, clones, key = f
 
     console.nodelay(False)
     game_over(console, snake, x_min, y_min, x_max, y_max)
 
 
-def programme(console, murs: list = None) -> None:
-    """Lance le jeu avec des options supplémentaires en fonction du mode de jeu choisi par l'utlisateur"""
+def programme(console,murs=None):
     hauteur, longueur = console.getmaxyx()
     x_min, y_min, x_max, y_max = 10, 5, longueur-10, hauteur-5
-    
     debut(console)
     pommes = pommegen(console, pomme,x_min, y_min, x_max, y_max)
-    
     if murs is None:
         murs = []
     if murs:
@@ -208,8 +194,8 @@ def programme(console, murs: list = None) -> None:
             for coord in mur.return_coordinates():
                 # Attention l'ordre dans addstr/addch est (y, x)
                 console.addstr(coord[1], coord[0], "█")
+    jeu(console, pommes, murs)
     
-    jeu(console, pommes, murs, x_min, y_min, x_max, y_max)
 
 
 if __name__ == "__main__":
