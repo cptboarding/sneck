@@ -1,6 +1,7 @@
 """
 Programme qui lance le jeu snake en fonction des options choisies par l'utilisateur
 """
+
 import curses
 import random
 import time
