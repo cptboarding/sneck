@@ -14,13 +14,13 @@ SYMBOL_GOLDEN_POMME = "§"
 
 
 
-def debut(console):
+def debut(console) -> None:
     console.clear()
     curses.curs_set(False)
     console.refresh()
 
 
-def afficher(console, texte, y_texte, x_texte, temps=5):
+def afficher(console, texte: str, y_texte: int, x_texte: int) -> None:
     """Affiche du texte"""
     for lettre in texte:
         console.addstr(y_texte, x_texte, lettre)
@@ -33,7 +33,7 @@ def afficher(console, texte, y_texte, x_texte, temps=5):
         x_texte = x_texte+1
 
 
-def border(console, caractere, x_min, y_min, x_max, y_max):
+def border(console, caractere: str, x_min: int, y_min: int, x_max: int, y_max: int) -> None:
     """Dessine les bords"""
     for y in range(y_min-1, y_max+2):
         console.addstr(y, x_min-1, caractere)
@@ -43,7 +43,7 @@ def border(console, caractere, x_min, y_min, x_max, y_max):
         console.addstr(y_min-1, x, caractere)
 
 
-def game_over(console, snake, x_min, y_min, x_max, y_max):
+def game_over(console, snake: personnage, x_min: int, y_min: int, x_max: int, y_max: int) -> None:
     """Supprime tout et affiche "tu es nul" """
     console.addstr(snake.y, snake.x, RIEN)
     for coordonnees in snake.clones:
@@ -57,7 +57,7 @@ def game_over(console, snake, x_min, y_min, x_max, y_max):
     afficher(console, "Game over", 10, 50)
 
 
-def frame(console, snake, longueur_max, x_min, y_min, x_max, y_max, key):
+def frame(console, snake: personnage, longueur_max: int, x_min: int, y_min: int, x_max: int, y_max: int, key: str) -> str|tuple:
     """Affiche le snake"""
     clones = snake.clones
 
@@ -85,18 +85,22 @@ def frame(console, snake, longueur_max, x_min, y_min, x_max, y_max, key):
     else:
         y, x = snake.nouvelles_coordonnees(key,  x_min, y_min, x_max, y_max)
         return y, x, clones, key
-def afficher_score(console, score, x_score=105, y_score=2):
+
+
+def afficher_score(console, score: int, x_score: int = 105, y_score: int = 2) -> None:
     "Affiche le score dans un encadré"
     largeur = 15
     console.addstr(y_score - 1, x_score, "+" + "-" * (largeur - 2) + "+")
     console.addstr(y_score, x_score, f"|Score : {score}|")
     console.addstr(y_score + 1, x_score, "+" + "-" * (largeur - 2) + "+")
-def randompommeposition(x_min, y_min, x_max, y_max) -> tuple:
+
+
+def randompommeposition(x_min: int, y_min: int, x_max: int, y_max: int) -> tuple:
     y = random.randint(y_min,y_max )  # éviter les bords
     x = random.randint(x_min, x_max)
     return (y, x)
 
-def pommegen(console, pomme,x_min, y_min, x_max, y_max):
+def pommegen(console, pomme: str, x_min: int, y_min: int, x_max: int, y_max: int) -> list:
     pommes = []
     for _ in range(10):
         y, x = randompommeposition(x_min, y_min, x_max, y_max)
@@ -104,7 +108,7 @@ def pommegen(console, pomme,x_min, y_min, x_max, y_max):
         console.addstr(y, x, pomme)
     return pommes
 
-def golden_pommegen(console, SYMBOL_GOLDEN_POMME,x_min, y_min, x_max, y_max):
+def golden_pommegen(console, SYMBOL_GOLDEN_POMME: str, x_min: int, y_min: int, x_max: int, y_max: int) -> list:
     the_golden_pomme = []
     y_g, x_g = randompommeposition(x_min, y_min, x_max, y_max)
     the_golden_pomme.append((y_g, x_g))
@@ -113,10 +117,8 @@ def golden_pommegen(console, SYMBOL_GOLDEN_POMME,x_min, y_min, x_max, y_max):
 
     
 
-def jeu(console,pommes,murs=None):
+def jeu(console, pommes: list, murs: list = None, x_min: int, y_min: int, x_max: int, y_max: int) -> None:
     """Le jeu"""
-    hauteur, longueur = console.getmaxyx()
-    x_min, y_min, x_max, y_max = 10, 5, longueur-10, hauteur-5
     x, y = 30, 15
     score = 0
     longueur_max = 2
@@ -140,8 +142,8 @@ def jeu(console,pommes,murs=None):
         f = frame(console, snake, longueur_max, x_min, y_min, x_max, y_max, key)
         if f == 'c est nul':
             break
+        
         if murs:
-            
             for mur in murs:
                 for (mx, my) in mur.return_coordinates():
                     if 0 <= my < height and 0 <= mx < width:
@@ -182,11 +184,14 @@ def jeu(console,pommes,murs=None):
     game_over(console, snake, x_min, y_min, x_max, y_max)
 
 
-def programme(console,murs=None):
+def programme(console, murs: list = None) -> None:
+    """Lance le jeu avec des options supplémentaires en fonction du mode de jeu choisi par l'utlisateur"""
     hauteur, longueur = console.getmaxyx()
     x_min, y_min, x_max, y_max = 10, 5, longueur-10, hauteur-5
+    
     debut(console)
     pommes = pommegen(console, pomme,x_min, y_min, x_max, y_max)
+    
     if murs is None:
         murs = []
     if murs:
@@ -195,9 +200,9 @@ def programme(console,murs=None):
             for coord in mur.return_coordinates():
                 # Attention l'ordre dans addstr/addch est (y, x)
                 console.addstr(coord[1], coord[0], "█")
-    jeu(console, pommes, murs)
+    
+    jeu(console, pommes, murs, x_min, y_min, x_max, y_max)
 
 
 if __name__ == "__main__":
     curses.wrapper(programme)
-
