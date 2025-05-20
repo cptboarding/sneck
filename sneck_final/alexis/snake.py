@@ -17,13 +17,13 @@ CLONE = "#"
 BORDER = "-"
 
 
-def debut(console):
+def debut(console) -> None:
     console.clear()
     curses.curs_set(False)
     console.refresh()
 
 
-def afficher(console, texte, y_texte, x_texte, temps=5):
+def afficher(console, texte: str, y_texte: int, x_texte: int):
     """Affiche du texte"""
     for lettre in texte:
         console.addstr(y_texte, x_texte, lettre)
@@ -36,7 +36,7 @@ def afficher(console, texte, y_texte, x_texte, temps=5):
         x_texte = x_texte+1
 
 
-def border(console, caractere, x_min, y_min, x_max, y_max):
+def border(console, caractere: int, x_min: int, y_min: int, x_max: int, y_max: int):
     """Dessine les bords"""
     for y in range(y_min, y_max+1):
         console.addstr(y, x_min, caractere)
@@ -46,7 +46,7 @@ def border(console, caractere, x_min, y_min, x_max, y_max):
         console.addstr(y_min, x, caractere)
 
 
-def game_over(console, snake, x_min, y_min, x_max, y_max):
+def game_over(console, snake: personnage, x_min: int, y_min: int, x_max: int, y_max: int):
     """Supprime tout et affiche "tu es nul" """
     console.addstr(snake.y, snake.x, RIEN)
     for coordonnees in snake.clones:
@@ -60,7 +60,7 @@ def game_over(console, snake, x_min, y_min, x_max, y_max):
     afficher(console, "Game over", 10, 50)
 
 
-def frame(console, snake, longueur_max, x_min, y_min, x_max, y_max, key):
+def frame(console, snake: personnage, longueur_max: int, x_min: int, y_min: int, x_max: int, y_max: int, key: str):
     """Affiche le snake"""
     clones = snake.clones
 
