@@ -19,7 +19,7 @@ class personnage(NamedTuple):
         """Vérifie si les coordonnées y et x sont possibles"""
         if (y, x) in clones:
             return "nul"
-        elif x == x_min or x == x_max or y == y_min or y == y_max:
+        elif x == x_min-1 or x == x_max+1 or y == y_min-1 or y == y_max+1:
             return "nul"
 
     
