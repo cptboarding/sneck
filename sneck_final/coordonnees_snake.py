@@ -23,7 +23,7 @@ class personnage(NamedTuple):
             return "nul"
 
     
-    def nouvelles_coordonnees(self, key: str, x_min: int, y_min: int, x_max: int, y_max: int) -> tuple(int, int):
+    def nouvelles_coordonnees(self, key: str, x_min: int, y_min: int, x_max: int, y_max: int) -> tuple:
         """Retourne les nouvelles coordonnées en fonction du key"""
         if key == "a":
             if personnage.verifier(self.y, self.x-1, self.clones, x_min, y_min, x_max, y_max) == "nul":
