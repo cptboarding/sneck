@@ -1,5 +1,5 @@
 '''
-docstring principale histoire de respecter les conventions de mr Kessler
+ceci genere des classes abstraites de murs qui vont calculer la position d'un mur nomade
 '''
 
 from typing import NamedTuple
@@ -11,9 +11,7 @@ class moving_wall(NamedTuple):
     y_start: int
     vel: tuple              
     move_range: int
-    progress: int = 0
-    x_max: int = 100        
-    y_max: int = 20        
+    progress: int = 0     
 
     #retourne un nouveau self
     @classmethod
@@ -54,19 +52,8 @@ class moving_wall(NamedTuple):
             for x in range(self.dimentions[0]):
                 prog = self.progress
                 vx, vy = self.vel
-                # Calcul de la position
                 pos_x = self.x_start + x + prog * abs(vx)
                 pos_y = self.y_start + y + prog * abs(vy)
-                # Clamp dans la zone de jeu
-                if pos_x < 0:
-                    pos_x = 0
-                elif pos_x >= self.x_max:
-                    pos_x = self.x_max - 1
-                if pos_y < 0:
-                    pos_y = 0
-                elif pos_y >= self.y_max:
-                    pos_y = self.y_max - 1
-
                 r.append((pos_x, pos_y))
         return r
 
