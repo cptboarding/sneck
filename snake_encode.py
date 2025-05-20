@@ -6,12 +6,12 @@ import datetime
 
 e = f.FileEditor("scoreboard")
 
-
+#regarde si le file est present
 def assertion():
     if not e.assertfile():
         e.create()
 
-
+#ajouter un petit zero histoire de normaliser
 def convert_zero(n):
     if n < 9:
         r = '0' + str(n)
@@ -19,8 +19,8 @@ def convert_zero(n):
     else:
         return str(n)
 
+#encode le score avec la date d'ojo
 #  value.ddmmyyyy;
-
 def encode(score):
     assertion()
     d = datetime.date.today()
@@ -30,6 +30,8 @@ def encode(score):
     s = str(score) + '.' + str(day) + str(mon) + str(yr) + ';'
     e.append(s)
 
+
+#lit le fichier et le decompose
 def decode():
     file = e.readfile()
     mode = 0
@@ -52,9 +54,7 @@ def decode():
                 dt += i
     return r
 
-def score(i):
-    return i[0]
-
+#return le top 5
 def get_top():
     scores = decode()
     scores.sort(reverse=True, key=lambda x: x[0])
@@ -69,7 +69,4 @@ def get_top():
 if __name__ == "__main__":
     t = get_top()
     print(t)
-
-
-
 
